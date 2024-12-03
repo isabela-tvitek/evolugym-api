@@ -1,0 +1,62 @@
+{
+  "exercises": [
+    {
+      "id": 1,
+      "name": "Agachamento",
+      "type": "Inferiores",
+      "details": [
+        {
+          "date": "2024-12-01",
+          "sets": 4,
+          "weight": 80,
+          "observation": "Aumentar o peso na próxima sessão."
+        },
+        {
+          "date": "2024-12-03",
+          "sets": 5,
+          "weight": 85,
+          "observation": "Boa execução, manter a postura."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Supino",
+      "type": "Superiores",
+      "details": [
+        {
+          "date": "2024-12-01",
+          "sets": 4,
+          "weight": 70,
+          "observation": "Ajustar a pegada da barra."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Abdominal",
+      "type": "Abdômen",
+      "details": [
+        {
+          "date": "2024-12-02",
+          "sets": 3,
+          "weight": 0,
+          "observation": "Aumentar o número de repetições."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Corrida",
+      "type": "Cardio",
+      "details": [
+        {
+          "date": "2024-12-02",
+          "sets": 1,
+          "weight": 0,
+          "observation": "Manter o ritmo constante."
+        }
+      ]
+    }
+  ]
+}
