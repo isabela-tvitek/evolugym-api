@@ -34,6 +34,7 @@ app.post('/exercises', (req, res) => {
   if (newExercise.name && newExercise.type) {
     const newId = content.exercises.length ? content.exercises[content.exercises.length - 1].id + 1 : 1;
     newExercise.id = newId;
+    newExercise.details = [];
     content.exercises.push(newExercise);
     fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
     res.status(201).json(newExercise);
@@ -63,6 +64,86 @@ app.delete('/exercises/:id', (req, res) => {
     content.exercises.splice(exerciseIndex, 1);
     fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
     res.status(204).send();
+  } else {
+    res.status(404).json({ message: 'Exercício não encontrado' });
+  }
+});
+
+// 6. Adicionar um detalhe ao exercício
+app.post('/exercises/:exerciseId/details', (req, res) => {
+  const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
+  if (exercise) {
+    const newDetail = req.body;
+    if (newDetail.date && newDetail.series !== undefined && newDetail.weight !== undefined) {
+      const newDetailId = exercise.details.length ? exercise.details[exercise.details.length - 1].id + 1 : 1;
+      newDetail.id = newDetailId;
+      exercise.details.push(newDetail);
+      fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
+      res.status(201).json(newDetail);
+    } else {
+      res.status(400).json({ message: 'Data, número de séries e peso são obrigatórios' });
+    }
+  } else {
+    res.status(404).json({ message: 'Exercício não encontrado' });
+  }
+});
+
+// 7. Obter detalhes de um exercício específico
+app.get('/exercises/:exerciseId/details', (req, res) => {
+  const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
+  if (exercise) {
+    res.json(exercise.details);
+  } else {
+    res.status(404).json({ message: 'Exercício não encontrado' });
+  }
+});
+
+// 8. Obter um detalhe específico de um exercício
+app.get('/exercises/:exerciseId/details/:detailId', (req, res) => {
+  const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
+  if (exercise) {
+    const detail = exercise.details.find(d => d.id === parseInt(req.params.detailId));
+    if (detail) {
+      res.json(detail);
+    } else {
+      res.status(404).json({ message: 'Detalhe não encontrado' });
+    }
+  } else {
+    res.status(404).json({ message: 'Exercício não encontrado' });
+  }
+});
+
+// 9. Atualizar um detalhe de exercício
+app.put('/exercises/:exerciseId/details/:detailId', (req, res) => {
+  const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
+  if (exercise) {
+    const detailIndex = exercise.details.findIndex(d => d.id === parseInt(req.params.detailId));
+    if (detailIndex !== -1) {
+      const updatedDetail = req.body;
+      updatedDetail.id = parseInt(req.params.detailId);
+      exercise.details[detailIndex] = updatedDetail;
+      fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
+      res.json(updatedDetail);
+    } else {
+      res.status(404).json({ message: 'Detalhe não encontrado' });
+    }
+  } else {
+    res.status(404).json({ message: 'Exercício não encontrado' });
+  }
+});
+
+// 10. Deletar um detalhe de exercício
+app.delete('/exercises/:exerciseId/details/:detailId', (req, res) => {
+  const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
+  if (exercise) {
+    const detailIndex = exercise.details.findIndex(d => d.id === parseInt(req.params.detailId));
+    if (detailIndex !== -1) {
+      exercise.details.splice(detailIndex, 1);
+      fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
+      res.status(204).send();
+    } else {
+      res.status(404).json({ message: 'Detalhe não encontrado' });
+    }
   } else {
     res.status(404).json({ message: 'Exercício não encontrado' });
   }
