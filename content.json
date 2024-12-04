@@ -31,32 +31,6 @@
           "observation": "Ajustar a pegada da barra."
         }
       ]
-    },
-    {
-      "id": 3,
-      "name": "Abdominal",
-      "type": "Abdômen",
-      "details": [
-        {
-          "date": "2024-12-02",
-          "sets": 3,
-          "weight": 0,
-          "observation": "Aumentar o número de repetições."
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "name": "Corrida",
-      "type": "Cardio",
-      "details": [
-        {
-          "date": "2024-12-02",
-          "sets": 1,
-          "weight": 0,
-          "observation": "Manter o ritmo constante."
-        }
-      ]
     }
   ]
 }

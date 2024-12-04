@@ -1,0 +1,27 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Este é um projeto de API RESTful desenvolvido com Node.js e Express para gerenciar uma lista de carros. A API permite adicionar, recuperar e excluir carros, além de suportar a validação de dados.",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isabela-tvitek/evolugym-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/isabela-tvitek/evolugym-api/issues"
+  },
+  "homepage": "https://github.com/isabela-tvitek/evolugym-api#readme"
+}
