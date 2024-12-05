@@ -4,31 +4,32 @@
       "id": 1,
       "name": "Agachamento",
       "type": "Inferiores",
-      "details": [
+      "records": [
         {
+          "id": 1,
+          "exerciseId": 1,
           "date": "2024-12-01",
-          "sets": 4,
-          "weight": 80,
-          "observation": "Aumentar o peso na próxima sessão."
+          "series": 4,
+          "weight": {
+            "S1": 5,
+            "S2": 10,
+            "S3": 0,
+            "S4": 0
+          },
+          "observation": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
         },
         {
-          "date": "2024-12-03",
-          "sets": 5,
-          "weight": 85,
-          "observation": "Boa execução, manter a postura."
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Supino",
-      "type": "Superiores",
-      "details": [
-        {
-          "date": "2024-12-01",
-          "sets": 4,
-          "weight": 70,
-          "observation": "Ajustar a pegada da barra."
+          "id": 2,
+          "exerciseId": 1,
+          "date": "2024-12-02",
+          "series": 4,
+          "weight": {
+            "S1": 5,
+            "S2": 10,
+            "S3": 10,
+            "S4": 15
+          },
+          "observation": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
         }
       ]
     }

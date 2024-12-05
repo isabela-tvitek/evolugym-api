@@ -34,7 +34,7 @@ app.post('/exercises', (req, res) => {
   if (newExercise.name && newExercise.type) {
     const newId = content.exercises.length ? content.exercises[content.exercises.length - 1].id + 1 : 1;
     newExercise.id = newId;
-    newExercise.details = [];
+    newExercise.records = [];
     content.exercises.push(newExercise);
     fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
     res.status(201).json(newExercise);
@@ -69,17 +69,28 @@ app.delete('/exercises/:id', (req, res) => {
   }
 });
 
-// 6. Adicionar um detalhe ao exercício
-app.post('/exercises/:exerciseId/details', (req, res) => {
+// 6. Adicionar um registro ao exercício
+app.post('/exercises/:exerciseId/records', (req, res) => {
   const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
   if (exercise) {
-    const newDetail = req.body;
-    if (newDetail.date && newDetail.series !== undefined && newDetail.weight !== undefined) {
-      const newDetailId = exercise.details.length ? exercise.details[exercise.details.length - 1].id + 1 : 1;
-      newDetail.id = newDetailId;
-      exercise.details.push(newDetail);
+    const newRecord = req.body;
+
+    if (newRecord.date && newRecord.series !== undefined && newRecord.weight !== undefined) {
+      const expectedWeightKeys = Array.from({ length: newRecord.series }, (_, i) => `S${i + 1}`);
+      const weightKeys = Object.keys(newRecord.weight);
+
+      if (weightKeys.length !== newRecord.series || !weightKeys.every(key => expectedWeightKeys.includes(key))) {
+        return res.status(400).json({ message: 'Peso deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+      }
+
+      const newRecordId = exercise.records.length ? exercise.records[exercise.records.length - 1].id + 1 : 1;
+      newRecord.id = newRecordId;
+      newRecord.exerciseId = exercise.id;
+
+      exercise.records.push(newRecord);
+
       fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
-      res.status(201).json(newDetail);
+      res.status(201).json(newRecord);
     } else {
       res.status(400).json({ message: 'Data, número de séries e peso são obrigatórios' });
     }
@@ -88,61 +99,71 @@ app.post('/exercises/:exerciseId/details', (req, res) => {
   }
 });
 
-// 7. Obter detalhes de um exercício específico
-app.get('/exercises/:exerciseId/details', (req, res) => {
+// 7. Obter registros de um exercício específico
+app.get('/exercises/:exerciseId/records', (req, res) => {
   const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
   if (exercise) {
-    res.json(exercise.details);
+    res.json(exercise.records);
   } else {
     res.status(404).json({ message: 'Exercício não encontrado' });
   }
 });
 
-// 8. Obter um detalhe específico de um exercício
-app.get('/exercises/:exerciseId/details/:detailId', (req, res) => {
+// 8. Obter um registro específico de um exercício
+app.get('/exercises/:exerciseId/records/:recordId', (req, res) => {
   const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
   if (exercise) {
-    const detail = exercise.details.find(d => d.id === parseInt(req.params.detailId));
-    if (detail) {
-      res.json(detail);
+    const record = exercise.records.find(r => r.id === parseInt(req.params.recordId));
+    if (record) {
+      res.json(record);
     } else {
-      res.status(404).json({ message: 'Detalhe não encontrado' });
+      res.status(404).json({ message: 'Registro não encontrado' });
     }
   } else {
     res.status(404).json({ message: 'Exercício não encontrado' });
   }
 });
 
-// 9. Atualizar um detalhe de exercício
-app.put('/exercises/:exerciseId/details/:detailId', (req, res) => {
+// 9. Atualizar um registro de exercício
+app.put('/exercises/:exerciseId/records/:recordId', (req, res) => {
   const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
   if (exercise) {
-    const detailIndex = exercise.details.findIndex(d => d.id === parseInt(req.params.detailId));
-    if (detailIndex !== -1) {
-      const updatedDetail = req.body;
-      updatedDetail.id = parseInt(req.params.detailId);
-      exercise.details[detailIndex] = updatedDetail;
+    const recordIndex = exercise.records.findIndex(r => r.id === parseInt(req.params.recordId));
+    if (recordIndex !== -1) {
+      const updatedRecord = req.body;
+
+      const expectedWeightKeys = Array.from({ length: updatedRecord.series }, (_, i) => `S${i + 1}`);
+      const weightKeys = Object.keys(updatedRecord.weight);
+
+      if (weightKeys.length !== updatedRecord.series || !weightKeys.every(key => expectedWeightKeys.includes(key))) {
+        return res.status(400).json({ message: 'Peso deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+      }
+
+      updatedRecord.id = parseInt(req.params.recordId);
+      updatedRecord.exerciseId = exercise.id; 
+      
+      exercise.records[recordIndex] = updatedRecord;
       fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
-      res.json(updatedDetail);
+      res.json(updatedRecord);
     } else {
-      res.status(404).json({ message: 'Detalhe não encontrado' });
+      res.status(404).json({ message: 'Registro não encontrado' });
     }
   } else {
     res.status(404).json({ message: 'Exercício não encontrado' });
   }
 });
 
-// 10. Deletar um detalhe de exercício
-app.delete('/exercises/:exerciseId/details/:detailId', (req, res) => {
+// 10. Deletar um registro de exercício
+app.delete('/exercises/:exerciseId/records/:recordId', (req, res) => {
   const exercise = content.exercises.find(e => e.id === parseInt(req.params.exerciseId));
   if (exercise) {
-    const detailIndex = exercise.details.findIndex(d => d.id === parseInt(req.params.detailId));
-    if (detailIndex !== -1) {
-      exercise.details.splice(detailIndex, 1);
+    const recordIndex = exercise.records.findIndex(r => r.id === parseInt(req.params.recordId));
+    if (recordIndex !== -1) {
+      exercise.records.splice(recordIndex, 1);
       fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
       res.status(204).send();
     } else {
-      res.status(404).json({ message: 'Detalhe não encontrado' });
+      res.status(404).json({ message: 'Registro não encontrado' });
     }
   } else {
     res.status(404).json({ message: 'Exercício não encontrado' });
