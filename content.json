@@ -13,23 +13,70 @@
           "weight": {
             "S1": 5,
             "S2": 10,
-            "S3": 0,
-            "S4": 0
+            "S3": 20,
+            "S4": 20
           },
+          "time": {},
           "observation": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
         },
         {
           "id": 2,
           "exerciseId": 1,
           "date": "2024-12-02",
-          "series": 4,
+          "series": 3,
           "weight": {
             "S1": 5,
             "S2": 10,
-            "S3": 10,
-            "S4": 15
+            "S3": 10
           },
-          "observation": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+          "time": {},
+          "observation": ""
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Corrida",
+      "type": "Cardio",
+      "records": [
+        {
+          "id": 1,
+          "exerciseId": 2,
+          "date": "2024-12-03",
+          "series": 1,
+          "time": {
+            "S1": 8
+          },
+          "observation": "Tempo 8s"
+        },
+        {
+          "id": 2,
+          "exerciseId": 2,
+          "date": "2024-12-03",
+          "series": 1,
+          "time": {
+            "S1": 7
+          },
+          "observation": "Tempo 7s"
+        },
+        {
+          "id": 3,
+          "exerciseId": 2,
+          "date": "2024-12-04",
+          "series": 4,
+          "weight": {
+            "S1": 10,
+            "S2": 9,
+            "S3": 0,
+            "S4": 0
+          },
+          "time": {
+            "S1": 10,
+            "S2": 9,
+            "S3": 0,
+            "S4": 0
+          },
+          "observation": "Tempo 0s"
         }
       ]
     }

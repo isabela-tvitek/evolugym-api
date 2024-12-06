@@ -75,24 +75,50 @@ app.post('/exercises/:exerciseId/records', (req, res) => {
   if (exercise) {
     const newRecord = req.body;
 
-    if (newRecord.date && newRecord.series !== undefined && newRecord.weight !== undefined) {
-      const expectedWeightKeys = Array.from({ length: newRecord.series }, (_, i) => `S${i + 1}`);
-      const weightKeys = Object.keys(newRecord.weight);
+    // Verifica o tipo do exercício (cardio ou musculação)
+    const isCardio = exercise.type.toLowerCase() === 'cardio';
 
-      if (weightKeys.length !== newRecord.series || !weightKeys.every(key => expectedWeightKeys.includes(key))) {
-        return res.status(400).json({ message: 'Peso deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+    // Verifica se os campos obrigatórios foram fornecidos corretamente
+    if (newRecord.date && newRecord.series !== undefined) {
+      if (isCardio) {
+        // Para Cardio, apenas 'time' pode ser fornecido
+        if (!newRecord.time) {
+          return res.status(400).json({ message: 'Tempo por série é obrigatório para exercícios de cardio' });
+        }
+        const expectedTimeKeys = Array.from({ length: newRecord.series }, (_, i) => `S${i + 1}`);
+        const timeKeys = Object.keys(newRecord.time);
+
+        if (timeKeys.length !== newRecord.series || !timeKeys.every(key => expectedTimeKeys.includes(key))) {
+          return res.status(400).json({ message: 'Tempo deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+        }
+      } else {
+        // Para Musculação, apenas 'weight' pode ser fornecido
+        if (!newRecord.weight) {
+          return res.status(400).json({ message: 'Peso por série é obrigatório para exercícios de musculação' });
+        }
+        const expectedWeightKeys = Array.from({ length: newRecord.series }, (_, i) => `S${i + 1}`);
+        const weightKeys = Object.keys(newRecord.weight);
+
+        if (weightKeys.length !== newRecord.series || !weightKeys.every(key => expectedWeightKeys.includes(key))) {
+          return res.status(400).json({ message: 'Peso deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+        }
       }
 
+      // Gera um ID para o novo registro
       const newRecordId = exercise.records.length ? exercise.records[exercise.records.length - 1].id + 1 : 1;
       newRecord.id = newRecordId;
       newRecord.exerciseId = exercise.id;
 
+      // Adiciona o novo registro ao exercício
       exercise.records.push(newRecord);
 
+      // Atualiza o arquivo JSON
       fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
+
+      // Responde com o novo registro
       res.status(201).json(newRecord);
     } else {
-      res.status(400).json({ message: 'Data, número de séries e peso são obrigatórios' });
+      res.status(400).json({ message: 'Data, número de séries e peso/tempo são obrigatórios' });
     }
   } else {
     res.status(404).json({ message: 'Exercício não encontrado' });
@@ -132,19 +158,49 @@ app.put('/exercises/:exerciseId/records/:recordId', (req, res) => {
     if (recordIndex !== -1) {
       const updatedRecord = req.body;
 
-      const expectedWeightKeys = Array.from({ length: updatedRecord.series }, (_, i) => `S${i + 1}`);
-      const weightKeys = Object.keys(updatedRecord.weight);
+      // Verifica se o tipo de exercício é 'cardio'
+      const isCardio = exercise.type.toLowerCase() === 'cardio';
 
-      if (weightKeys.length !== updatedRecord.series || !weightKeys.every(key => expectedWeightKeys.includes(key))) {
-        return res.status(400).json({ message: 'Peso deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+      // Verifica se os campos obrigatórios foram fornecidos corretamente
+      if (updatedRecord.date && updatedRecord.series !== undefined) {
+        if (isCardio) {
+          // Para Cardio, apenas 'time' pode ser fornecido
+          if (!updatedRecord.time) {
+            return res.status(400).json({ message: 'Tempo por série é obrigatório para exercícios de cardio' });
+          }
+          const expectedTimeKeys = Array.from({ length: updatedRecord.series }, (_, i) => `S${i + 1}`);
+          const timeKeys = Object.keys(updatedRecord.time);
+
+          if (timeKeys.length !== updatedRecord.series || !timeKeys.every(key => expectedTimeKeys.includes(key))) {
+            return res.status(400).json({ message: 'Tempo deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+          }
+        } else {
+          // Para Musculação, apenas 'weight' pode ser fornecido
+          if (!updatedRecord.weight) {
+            return res.status(400).json({ message: 'Peso por série é obrigatório para exercícios de musculação' });
+          }
+          const expectedWeightKeys = Array.from({ length: updatedRecord.series }, (_, i) => `S${i + 1}`);
+          const weightKeys = Object.keys(updatedRecord.weight);
+
+          if (weightKeys.length !== updatedRecord.series || !weightKeys.every(key => expectedWeightKeys.includes(key))) {
+            return res.status(400).json({ message: 'Peso deve ter chaves correspondentes ao número de séries (S1, S2, S3, etc.)' });
+          }
+        }
+
+        updatedRecord.id = parseInt(req.params.recordId);
+        updatedRecord.exerciseId = exercise.id;
+
+        // Atualiza o registro no array
+        exercise.records[recordIndex] = updatedRecord;
+
+        // Atualiza o arquivo JSON
+        fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
+
+        // Retorna o registro atualizado
+        res.json(updatedRecord);
+      } else {
+        res.status(400).json({ message: 'Data, número de séries e peso/tempo são obrigatórios' });
       }
-
-      updatedRecord.id = parseInt(req.params.recordId);
-      updatedRecord.exerciseId = exercise.id; 
-      
-      exercise.records[recordIndex] = updatedRecord;
-      fs.writeFileSync(contentPath, JSON.stringify(content, null, 2));
-      res.json(updatedRecord);
     } else {
       res.status(404).json({ message: 'Registro não encontrado' });
     }
@@ -170,7 +226,7 @@ app.delete('/exercises/:exerciseId/records/:recordId', (req, res) => {
   }
 });
 
-// Iniciar o servidor
+// Inicia o servidor
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
