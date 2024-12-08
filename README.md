@@ -1,44 +1,265 @@
+# API de Gerenciamento de Exercícios
 
-# API de Carros
+---
 
-Este é um projeto de API RESTful desenvolvido com Node.js e Express para gerenciar uma lista de Exercícios. A API permite adicionar, recuperar e excluir exercícios, além de suportar a validação de dados.
+## Descrição
+Esta API permite o gerenciamento de exercícios e seus registros, incluindo CRUD completo para exercícios e funcionalidades avançadas para registro de séries de musculação e cardio.
 
-## Pré-requisitos
+---
 
-Antes de começar, você precisará ter instalado em sua máquina:
+## Instalação e Configuração
 
-- [Node.js](https://nodejs.org/) (v14 ou superior)
-- [npm](https://www.npmjs.com/) (geralmente vem junto com o Node.js)
-
-## Instalação
-
-1. **Clone o repositório**
-
-   Abra o terminal e execute o seguinte comando para clonar o repositório:
-
+1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/isabela-tvitek/evolugym-api.git
-   cd seurepositorio
-   ```
-
-2. **Instale as dependências**
-
-   No diretório do projeto, execute o seguinte comando para instalar as dependências necessárias:
-
+   git clone <url-do-repositorio>
+   cd <nome-do-repositorio>
+   
+2. **Instale as dependências:**
    ```bash
-   npm install
-   ```
+   git clone <url-do-repositorio>
+   cd <nome-do-repositorio>
+   
+3. **Execute o servidor:**
+   ```bash
+   node index.js
+   
+4. **Acesse a API:**
+  http://localhost:3000
+   
+5. **Exemplo:**
+   Tem um exemplo pronto da API já no arquivo content.json mas é possivél deixá-lo vazio
+   
+        {
+            "exercises": []
+        }
 
-## Inicialização
+   
+---
 
-Após a instalação das dependências, você pode iniciar o servidor com o seguinte comando:
+## Rotas da API
+  
+## **1. Obter todos os exercícios**
+- **Método:** `GET`
+- **Endpoint:** `/exercises`
+- **Descrição:** Retorna todos os exercícios cadastrados.
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 1,
+      "name": "Supino",
+      "type": "Superiores",
+      "records": []
+   }
+  ]
 
-```bash
-node index.js
-```
+  
+## **2. Obter um exercício específico**
+- **Método:** `GET`
+- **Endpoint:** `/exercises/:id`
+- **Descrição:** Retorna os dados de um exercício específico.
+- **Parâmetros:** 
+   - id (obrigatório): ID do exercício
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 1,
+      "name": "Supino",
+      "type": "Superiores",
+      "records": []
+   }
+  ]
 
-O servidor será iniciado e ficará escutando na porta `3000` por padrão. Você verá uma mensagem no terminal indicando que o servidor está rodando:
 
-```
-Servidor rodando em http://localhost:3000
-```
+## **3. Adicionar um novo exercício**
+- **Método:** `POST`
+- **Endpoint:** `/exercises`
+- **Descrição:** Adiciona um novo exercício.
+- **Body:**
+  ```json
+  [
+   {
+      "name": "Corrida",
+      "type": "Cardio"
+   }
+  ]
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 2,
+      "name": "Corrida",
+      "type": "Cardio",
+      "records": []
+   }
+  ]
+
+  
+## **4. Atualizar um exercício**
+- **Método:** `PUT`
+- **Endpoint:** `/exercises/:id`
+- **Descrição:** Atualiza os dados de um exercício existente.
+- **Parâmetros:** 
+   - id (obrigatório): ID do exercício
+- **Body:**
+  ```json
+  [
+   {
+      "name": "Supino Inclinado",
+      "type": "Superiores"
+   }
+  ]
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 1,
+      "name": "Supino Inclinado",
+      "type": "Superiores",
+      "records": []
+   }
+  ]
+
+
+## **5. Deletar um exercício**
+- **Método:** `DELETE`
+- **Endpoint:** `/exercises/:id`
+- **Descrição:** Remove um exercício do sistema.
+- **Parâmetros:** 
+   - id (obrigatório): ID do exercício
+- **Resposta:** 204 No Content
+
+  
+## **6. Adicionar um registro a um exercício**
+- **Método:** `POST`
+- **Endpoint:** `/exercises/:exerciseId/records`
+- **Descrição:** Adiciona um registro de séries ao exercício.
+- **Parâmetros:** 
+   - exerciseId (obrigatório): ID do exercício.
+- **Body para Cardio:**
+  ```json
+  [
+   {
+      "date": "2024-01-01",
+      "series": 3,
+      "time": {
+         "S1": 5,
+         "S2": 6,
+         "S3": 5
+      }
+   }
+  ]
+- **Body para Musculação:**
+  ```json
+  [
+   {
+      "date": "2024-01-01",
+      "series": 3,
+      "weight": {
+         "S1": 50,
+         "S2": 55,
+         "S3": 60
+      }
+   }
+  ]
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 1,
+      "exerciseId": 2,
+      "date": "2024-01-01",
+      "series": 3,
+      "weight": { 
+         "S1": 50, 
+         "S2": 55, 
+         "S3": 60 
+      }
+   }
+  ]
+
+
+## **7. Obter registros de um exercício**
+- **Método:** `GET`
+- **Endpoint:** `/exercises/:exerciseId/records`
+- **Descrição:** Retorna todos os registros de séries de um exercício.
+- **Parâmetros:** 
+   - exerciseId (obrigatório): ID do exercício.
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 1,
+      "exerciseId": 2,
+      "date": "2024-01-01",
+      "series": 3,
+      "weight": { "S1": 50, "S2": 55, "S3": 60 }
+   }
+  ]
+
+  
+## **8. Obter um registro específico de um exercício**
+- **Método:** `GET`
+- **Endpoint:** `/exercises/:exerciseId/records/:recordId`
+- **Descrição:** Retorna os dados de um registro específico.
+- **Parâmetros:** 
+   - exerciseId (obrigatório): ID do exercício.
+   - recordId (obrigatório): ID do registro.
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 1,
+      "exerciseId": 2,
+      "date": "2024-01-01",
+      "series": 3,
+      "weight": { "S1": 50, "S2": 55, "S3": 60 }
+   }
+  ]
+
+## **9. Atualizar um registro de exercício**
+- **Método:** `PUT`
+- **Endpoint:** `/exercises/:exerciseId/records/:recordId`
+- **Descrição:** Atualiza os dados de um registro de exercício.
+- **Parâmetros:** 
+   - exerciseId (obrigatório): ID do exercício.
+   - recordId (obrigatório): ID do registro.
+- **Body:**
+  ```json
+  [
+   {
+      "date": "2024-01-01",
+      "series": 3,
+      "weight": {
+         "S1": 55,
+         "S2": 60,
+         "S3": 65
+      }
+   }
+  ]
+- **Resposta:**
+  ```json
+  [
+   {
+      "id": 1,
+      "exerciseId": 2,
+      "date": "2024-01-01",
+      "series": 3,
+      "weight": { 
+         "S1": 55, 
+         "S2": 60, 
+         "S3": 65 
+      }
+   }
+  ]
+  
+## **10. Deletar um registro de exercício**
+- **Método:** `DELETE`
+- **Endpoint:** `/exercises/:exerciseId/records/:recordId`
+- **Descrição:** Remove um registro de exercício do sistema.
+- **Parâmetros:** 
+   - exerciseId (obrigatório): ID do exercício.
+   - recordId (obrigatório): ID do registro.
+- **Resposta:** 204 No Content
+---

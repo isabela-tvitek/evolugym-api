@@ -22,15 +22,16 @@
         {
           "id": 2,
           "exerciseId": 1,
-          "date": "2024-12-02",
-          "series": 3,
+          "date": "2024-12-04",
+          "series": 4,
           "weight": {
             "S1": 5,
             "S2": 10,
-            "S3": 10
+            "S3": 10,
+            "S4": 15
           },
           "time": {},
-          "observation": ""
+          "observation": "Aumentar carga"
         }
       ]
     },
@@ -40,43 +41,121 @@
       "type": "Cardio",
       "records": [
         {
-          "id": 1,
+          "id": 4,
           "exerciseId": 2,
-          "date": "2024-12-03",
-          "series": 1,
-          "time": {
-            "S1": 8
+          "date": "2024-12-07",
+          "series": 4,
+          "weight": {
+            "S1": 12,
+            "S2": 12,
+            "S3": 12,
+            "S4": 12
           },
-          "observation": "Tempo 8s"
+          "time": {
+            "S1": 12,
+            "S2": 12,
+            "S3": 12,
+            "S4": 12
+          },
+          "observation": "aguentava velocidade maior"
         },
         {
-          "id": 2,
-          "exerciseId": 2,
-          "date": "2024-12-03",
-          "series": 1,
-          "time": {
-            "S1": 7
-          },
-          "observation": "Tempo 7s"
-        },
-        {
-          "id": 3,
+          "id": 7,
           "exerciseId": 2,
           "date": "2024-12-04",
+          "series": 3,
+          "weight": {
+            "S1": 2000,
+            "S2": 3000,
+            "S3": 4000
+          },
+          "time": {
+            "S1": 2000,
+            "S2": 3000,
+            "S3": 4000
+          },
+          "observation": "Torci o pe, nao foi possivel finalizar"
+        },
+        {
+          "id": 8,
+          "exerciseId": 2,
+          "date": "2024-12-04",
+          "series": 1,
+          "weight": {
+            "S1": 12
+          },
+          "time": {
+            "S1": 12
+          },
+          "observation": "Media de 30min de caminhada, nao marquei com timer"
+        },
+        {
+          "id": 9,
+          "exerciseId": 2,
+          "date": "2024-12-04",
+          "series": 1,
+          "weight": {
+            "S1": 340
+          },
+          "time": {
+            "S1": 340
+          },
+          "observation": "Esqueci o timer"
+        },
+        {
+          "id": 11,
+          "exerciseId": 2,
+          "date": "2024-12-04",
+          "series": 1,
+          "weight": {
+            "S1": 120
+          },
+          "time": {
+            "S1": 120
+          },
+          "observation": "Estava fraca"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Triceps Frances",
+      "type": "Superiores",
+      "records": [
+        {
+          "id": 1,
+          "exerciseId": 3,
+          "date": "2024-12-06",
           "series": 4,
           "weight": {
             "S1": 10,
-            "S2": 9,
-            "S3": 0,
-            "S4": 0
+            "S2": 15,
+            "S3": 15,
+            "S4": 20
           },
-          "time": {
-            "S1": 10,
-            "S2": 9,
-            "S3": 0,
-            "S4": 0
+          "time": {},
+          "observation": "aumentar peso"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Prancha",
+      "type": "Abdômen",
+      "records": [
+        {
+          "id": 1,
+          "exerciseId": 4,
+          "date": "2024-12-05",
+          "series": 4,
+          "weight": {
+            "S1": 60,
+            "S2": 60,
+            "S3": 60,
+            "S4": 60
           },
-          "observation": "Tempo 0s"
+          "time": {},
+          "observation": "senti o abdomen queimar"
         }
       ]
     }
